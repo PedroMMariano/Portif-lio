@@ -1,25 +1,34 @@
-document.getElementById('expense-form').addEventListener('submit', function (event) {
+document.getElementById('despesas-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const description = document.getElementById('description').value;
-    const amount = parseFloat(document.getElementById('amount').value).toFixed(2);
+    const descricao = document.getElementById('descricao').value;
+    const valor = parseFloat(document.getElementById('valor').value);
 
+    if (descricao && !isNaN(valor)) {
+        const tableBody = document.getElementById('despesas-list');
+        const newRow = document.createElement('tr');
 
-    if (!description || isNaN(amount) || amount <= 0) {
-        alert('Por favor, preencha todos os campos corretamente.');
-        return;
+        newRow.innerHTML = `
+            <td>${descricao}</td>
+            <td>R$ ${valor.toFixed(2)}</td>
+        `;
+
+        tableBody.appendChild(newRow);
+
+        // Limpar o formulário
+        document.getElementById('descricao').value = '';
+        document.getElementById('valor').value = '';
     }
-
-    const tableBody = document.getElementById('expenses-table');
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-        <td>${description}</td>
-        <td>R$ ${amount}</td>
-    `;
-
-    tableBody.appendChild(newRow);
-
-    document.getElementById('description').value = '';
-    document.getElementById('amount').value = '';
 });
+
+function calcularTotal() {
+    const rows = document.querySelectorAll('#despesas-list tr');
+    let total = 0;
+
+    rows.forEach(row => {
+        const valorText = row.cells[1].textContent.replace('R$ ', '').replace(',', '.');
+        total += parseFloat(valorText);
+    });
+
+    document.getElementById('total').textContent = `Total: R$ ${total.toFixed(2)}`;
+}
