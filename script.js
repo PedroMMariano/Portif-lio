@@ -15,7 +15,7 @@ document.getElementById('despesas-form').addEventListener('submit', function (ev
 
         tableBody.appendChild(newRow);
 
-        // Limpar o formulário
+
         document.getElementById('descricao').value = '';
         document.getElementById('valor').value = '';
     }
